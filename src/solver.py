@@ -4,6 +4,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 
 authors = ['Giancarlo','Nívea','Matheus']
 
@@ -50,6 +51,7 @@ class Solver:
             xouy = carg.cell(c+1,1).value
             GDL = int(no*2-(2-xouy)) 
             self.F[GDL-1,0] = carg.cell(c+1,2).value
+        
         ################################################## Ler restricoes
         restr = arquivo.sheet_by_name('Restricao')
         # Numero de restricoes
@@ -81,8 +83,46 @@ class Solver:
     def plot(self,e):
         """Plot the graph of the all elements of the structure"""
         # plt.show()
-        fig = plt.figure()
+        fig = plt.figure(figsize=(20, 8), dpi=80)
         # Passa por todos os membros
+        for i in range(self.nm):
+            n1 = int(self.Inc[i,0])
+            n2 = int(self.Inc[i,1])   
+            N1 = int(self.Inc[i,0])-1
+            N2 = int(self.Inc[i,1])-1  
+            N1x,N1y,N2x,N2y = 2*N1,2*N1+1,2*N2,2*N2+1
+      
+            plt.scatter([self.N_matrix[0,n1-1],self.N_matrix[0,n2-1]],[self.N_matrix[1,n1-1],self.N_matrix[1,n2-1]],marker='o',color='black')
+            plt.plot([self.N_matrix[0,n1-1],self.N_matrix[0,n2-1]],[self.N_matrix[1,n1-1],self.N_matrix[1,n2-1]],color='black',linewidth=1)
+        
+        for i in range(self.nn):
+            x,y = 2*i,2*i+1
+            if x in self.R:
+                plt.scatter(self.N_matrix[0,i],self.N_matrix[1,i],400,marker =5,zorder = -2,color ='gray')
+            if y in self.R:
+                plt.scatter(self.N_matrix[0,i],self.N_matrix[1,i],400,marker =6,zorder = -2,color ='gray')
+
+        
+        for i in range(self.nc):
+            Fy,Fx = self.F[2*i][0],self.F[2*i+1][0]
+            x = self.N_matrix[0,i]
+            y = self.N_matrix[1,i]
+            if Fx != 0:
+                plt.arrow(x,y,0,-0.02,width =0.001,color='k')
+                plt.text(x-0.006,y-0.03,'{}kN'.format(Fx/1000),va='bottom')
+            if Fy != 0:
+                plt.arrow(x,y,-0.02,0,width =0.001,color='k')
+                plt.text(x-0.045,y,'{}kN'.format(Fy/1000),va='bottom')
+            
+        plt.title("Treliça com restrições e cargas definidas")
+        plt.xlabel('x [m]')
+        plt.ylabel('y [m]')
+        plt.grid(True)
+        plt.axis('equal')
+        plt.savefig(f"{self.filename.split('.')[0]}_initial.png")
+        plt.show()
+
+        fig = plt.figure(figsize=(20, 8), dpi=80)
         for i in range(self.nm):
             # encontra no inicial [n1] e final [n2] 
             n1 = int(self.Inc[i,0])
@@ -90,13 +130,64 @@ class Solver:
             N1 = int(self.Inc[i,0])-1
             N2 = int(self.Inc[i,1])-1  
             N1x,N1y,N2x,N2y = 2*N1,2*N1+1,2*N2,2*N2+1           
-            plt.plot([self.N_matrix[0,n1-1],self.N_matrix[0,n2-1]],[self.N_matrix[1,n1-1],self.N_matrix[1,n2-1]],color='r',linewidth=3)
-            plt.plot([self.N_matrix[0,n1-1]+self.displacements[N1x]*e,self.N_matrix[0,n2-1]+self.displacements[N2x]*e],[self.N_matrix[1,n1-1]+self.displacements[N1y]*e,self.N_matrix[1,n2-1]+self.displacements[N2y]*e],'y:',linewidth=3)
+            plt.plot([self.N_matrix[0,n1-1],self.N_matrix[0,n2-1]],[self.N_matrix[1,n1-1],self.N_matrix[1,n2-1]],'b:',linewidth=1)
+            plt.scatter([self.N_matrix[0,n1-1],self.N_matrix[0,n2-1]],[self.N_matrix[1,n1-1],self.N_matrix[1,n2-1]],marker='o',color='blue')
+            plt.plot([self.N_matrix[0,n1-1]+self.displacements[N1x]*e,self.N_matrix[0,n2-1]+self.displacements[N2x]*e],[self.N_matrix[1,n1-1]+self.displacements[N1y]*e,self.N_matrix[1,n2-1]+self.displacements[N2y]*e],'red',linewidth=1.5)
+            plt.scatter([self.N_matrix[0,n1-1]+self.displacements[N1x]*e,self.N_matrix[0,n2-1]+self.displacements[N2x]*e],[self.N_matrix[1,n1-1]+self.displacements[N1y]*e,self.N_matrix[1,n2-1]+self.displacements[N2y]*e],marker='o',color='red')
+        
+        for i in range(self.nn):
+            x,y = 2*i,2*i+1
+            if x in self.R:
+                plt.scatter(self.N_matrix[0,i],self.N_matrix[1,i],400,marker =5,zorder = -2,color ='gray')
+            if y in self.R:
+                plt.scatter(self.N_matrix[0,i],self.N_matrix[1,i],400,marker =6,zorder = -2,color ='gray')
 
+        blue_patch = mpatches.Patch(color='blue',alpha=1, label='Treliça Inicial')
+        red_patch = mpatches.Patch(color='red',alpha=1, label='Treliça Deformada')
+        plt.legend(handles=[blue_patch,red_patch])
+
+        plt.title("Treliça com deformações e pontos deslocados")
         plt.xlabel('x [m]')
         plt.ylabel('y [m]')
         plt.grid(True)
         plt.axis('equal')
+        plt.savefig(f"{self.filename.split('.')[0]}_deformed.png")
+        plt.show()
+
+        fig = plt.figure(figsize=(20, 8), dpi=80)
+        for i in range(self.nn):
+            x,y = 2*i,2*i+1
+            if x in self.R:
+                plt.scatter(self.N_matrix[0,i],self.N_matrix[1,i],400,marker =5,zorder = -2,color ='gray')
+            if y in self.R:
+                plt.scatter(self.N_matrix[0,i],self.N_matrix[1,i],400,marker =6,zorder = -2,color ='gray')
+
+        for i in range(self.nm):
+            # encontra no inicial [n1] e final [n2] 
+            n1 = int(self.Inc[i,0])
+            n2 = int(self.Inc[i,1])   
+            N1 = int(self.Inc[i,0])-1
+            N2 = int(self.Inc[i,1])-1  
+            N1x,N1y,N2x,N2y = 2*N1,2*N1+1,2*N2,2*N2+1
+            if self.forces[i]<0:           
+                plt.plot([self.N_matrix[0,n1-1],self.N_matrix[0,n2-1]],[self.N_matrix[1,n1-1],self.N_matrix[1,n2-1]],color='b',linewidth=3)
+            else:
+                plt.plot([self.N_matrix[0,n1-1],self.N_matrix[0,n2-1]],[self.N_matrix[1,n1-1],self.N_matrix[1,n2-1]],color='r',linewidth=3)
+            plt.scatter([self.N_matrix[0,n1-1],self.N_matrix[0,n2-1]],[self.N_matrix[1,n1-1],self.N_matrix[1,n2-1]],marker='o',color='black')
+            plt.text(np.mean([self.N_matrix[0,n1-1],self.N_matrix[0,n2-1]]),
+            np.mean([self.N_matrix[1,n1-1],self.N_matrix[1,n2-1]]),
+            '{:.2f}kN'.format(self.forces[i]/1000),
+            rotation =180*np.arctan(self.angs[i,1]/self.angs[i,0])/np.pi,
+            horizontalalignment='center',
+            verticalalignment='center',
+            size = 16,
+            weight = 'bold')
+        plt.title("Forças atuantes nos membros da Treliça")
+        plt.xlabel('x [m]')
+        plt.ylabel('y [m]')
+        plt.grid(True)
+        plt.axis('equal')
+        plt.savefig(f"{self.filename.split('.')[0]}_forces.png")
         plt.show()
 
     def generate_outfile(self,name):
@@ -177,7 +268,6 @@ class Solver:
     def __gauss_seidel(self,A, b, tol):
         n = len(b[:,0])
         x = np.zeros((n,1))
-        x0 = np.zeros((n,1))
         count = 0
         while True:
             x_new = np.zeros_like(x)
@@ -187,7 +277,7 @@ class Solver:
                 x_new[i] = (b[i] - s1 - s2) / A[i, i]
             if np.allclose(x, x_new, rtol=tol):
                 break
-            x = x_new
+            x = x_new.copy()
             count += 1
         return x_new,count
 
@@ -202,8 +292,8 @@ class Solver:
         force_vector_restricted = np.take(np.array(self.F),unrestricted_degree,axis=0)
         
         #solução para deslocamentos
-        U1,count1 = self.__jacobi(global_matrix_restricted, force_vector_restricted,1e-9)
-        U2,count2 = self.__gauss_seidel(global_matrix_restricted, force_vector_restricted,1e-9)
+        U1,count1 = self.__jacobi(global_matrix_restricted, force_vector_restricted,1e-12)
+        U2,count2 = self.__gauss_seidel(global_matrix_restricted, force_vector_restricted,1e-12)
         if count2 < count1:
             U = U2.copy()
             print("--> Using Gauss-seidel numerical Solution")
