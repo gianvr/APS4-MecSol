@@ -119,7 +119,7 @@ class Solver:
         plt.ylabel('y [m]')
         plt.grid(True)
         plt.axis('equal')
-        plt.savefig(f"{self.filename.split('.')[0]}_initial.png")
+        plt.savefig(f"plots/{self.filename.split('.')[0]}_initial.png")
         plt.show()
 
         fig = plt.figure(figsize=(20, 8), dpi=80)
@@ -151,7 +151,7 @@ class Solver:
         plt.ylabel('y [m]')
         plt.grid(True)
         plt.axis('equal')
-        plt.savefig(f"{self.filename.split('.')[0]}_deformed.png")
+        plt.savefig(f"plots/{self.filename.split('.')[0]}_deformed.png")
         plt.show()
 
         fig = plt.figure(figsize=(20, 8), dpi=80)
@@ -187,13 +187,13 @@ class Solver:
         plt.ylabel('y [m]')
         plt.grid(True)
         plt.axis('equal')
-        plt.savefig(f"{self.filename.split('.')[0]}_forces.png")
+        plt.savefig(f"plots/{self.filename.split('.')[0]}_forces.png")
         plt.show()
 
     def generate_outfile(self,name):
         """Create an outfile with the solutions values"""
         name = name + '.txt'
-        f = open(f"{name}","w+")
+        f = open(f"outfiles/{name}","w+")
         f.write('Reacoes de apoio [N]\n')
         f.write(str(self.reactions))
         f.write('\n\nDeslocamentos [m]\n')
