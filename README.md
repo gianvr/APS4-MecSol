@@ -21,8 +21,8 @@ To understand better the I/O files, look at the files inside the src folder.
 ## Results:
 <div align="center" style="max-width:68rem;">
    <tr>
-    <td align="center"> <img src="src/entrada_2_initial.png"/> </td>
-    <td align="center"> <img src="src/entrada_2_deformed.png"/> </td>
-    <td align="center"> <img src="src/entrada_2_forces.png"/> </td>
+    <td align="center"> <img src="src/plots/entrada_2_initial.png"/> </td>
+    <td align="center"> <img src="src/plots/entrada_2_deformed.png"/> </td>
+    <td align="center"> <img src="src/plots/entrada_2_forces.png"/> </td>
   </tr>
 </div>
