@@ -16,4 +16,13 @@
 </div>
 
 Project of software with the goal to solve Plain Trusser due its entries.
-To understand better the Entry and the out files, look at the files inside the src folder.
+To understand better the I/O files, look at the files inside the src folder.
+
+## Results:
+<div align="center" style="max-width:68rem;">
+   <tr>
+    <td align="center"> <img src="src/entrada_2_initial.png"/> </td>
+    <td align="center"> <img src="src/entrada_2_deformed.png"/> </td>
+    <td align="center"> <img src="src/entrada_2_forces.png"/> </td>
+  </tr>
+</div>
