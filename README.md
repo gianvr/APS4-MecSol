@@ -10,7 +10,7 @@
   <tr>
     <td align="center"><a href="https://github.com/matheus-1618"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/matheus-1618" width="100px;" alt=""/><br /><sub><b>Matheus Oliveira</b></sub></a><br /><a href="https://github.com/matheus-1618" title="Matheus Silva M. Oliveira"></a> Developer</td>
    <td align="center"><a href="https://github.com/niveaabreu"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/niveaabreu" width="100px;" alt=""/><br /><sub><b>Nívea de Abreu</b></sub></a><br /><a href="https://github.com/niveaabreu" title="Nívea de Abreu"></a>Developer</td>
-   <td align="center"><a href="https://github.com/gianvr"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/gianvr" width="100px;" alt=""/><br /><sub><b>Giancalo Vanoni</b></sub></a><br /><a href="https://github.com/gianvr" title="Giancalo Vanoni"></a> Developer</td>
+   <td align="center"><a href="https://github.com/gianvr"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/gianvr" width="100px;" alt=""/><br /><sub><b>Giancarlo Vanoni</b></sub></a><br /><a href="https://github.com/gianvr" title="Giancarlo Vanoni"></a> Developer</td>
   </tr>
 </table>
 </div>
